@@ -66,7 +66,7 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "transformers<5.0.0",
+    "transformers>=5.2.0",
     "datasets>=2.20.0",
     "accelerate",
     "omegaconf>=2.3.0",
@@ -83,7 +83,6 @@ dependencies = [
     "qwen-vl-utils",
     "transformer-engine[pytorch,core_cu13]>=2.10.0a0,<2.13.0",
     "mamba-ssm",
-    "nvidia-resiliency-ext",
     "causal-conv1d",
     "flash-linear-attention",
     "timm",
@@ -108,14 +107,16 @@ no-build-isolation-package = [
 ]
 prerelease = "allow"
 override-dependencies = [
-    "torch; sys_platform == 'never'",
-    "torchvision; sys_platform == 'never'",
-    "triton; sys_platform == 'never'",
     "transformer-engine @ git+https://github.com/NVIDIA/TransformerEngine.git@5671fd3675906cda1ade26c24a65d3dedd88eb89",
     "mlflow>=3.5.0",
     "cryptography>=43.0.0,<47",
     "nvidia-modelopt~=0.41.0",
+    "nvidia-resiliency-ext; sys_platform == 'never'",
 ]
+
+[tool.uv.extra-build-dependencies]
+transformer-engine = ["setuptools", "pybind11"]
+nv-grouped-gemm = ["torch"]
 
 [tool.uv.sources]
 megatron-core = { path = "3rdparty/Megatron-LM/", editable = true }
@@ -126,6 +127,9 @@ recipes = [
 ]
 tensor-inspect = [
     "nvdlfw-inspect==0.2.1",
+]
+resiliency = [
+    "nvidia-resiliency-ext",
 ]
 
 [dependency-groups]
